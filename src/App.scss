@@ -1,0 +1,49 @@
+.nav {
+  background: "red" !important;
+}
+
+.customPagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+  .selected {
+    a {
+      font-family: 'Helvetica Neue LT Pro';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 24px;
+      text-decoration-line: underline;
+      color: #FF6A63;
+    }
+  }
+
+  li>a {
+    text-decoration: none;
+    font-size: larger;
+    color: white;
+    background-color: transparent;
+    border: none;
+  }
+
+  .previous {
+    margin-right: 10px;
+
+  }
+
+  .next {
+    margin-left: 10px;
+  }
+
+  .break {
+    color: white;
+  }
+
+  .disabled {
+    pointer-events: auto ! important;
+    cursor: not-allowed ! important;
+  } 
+}
+

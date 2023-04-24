@@ -1,18 +1,25 @@
 import styled from "styled-components";
 
 export const Card = styled.div`
-  height: "178px";
-  width: "280px";
-  background: linear-gradient(0deg, #1a2b4a 0%, #2b507c 105.38%);
+  min-height: "178px";
+  min-width: "280px";
   margin: 16px 8px;
   display: flex;
   flex-direction: column;
 
+  @media (max-width: 575.98px) {
+    min-width: 335px;
+  }
+
+  @media (max-width: 375px) {
+    max-width: 300px;
+  }
+
   .moviePoster {
     object-fit: cover;
     scale: 100%;
-    width: 280px;
-    height: 137px;
+    min-width: 280px;
+    max-height: 137px;
   }
 
   .playIcon {
@@ -28,6 +35,7 @@ export const Card = styled.div`
 
 export const CardBottomSection = styled.div`
   padding: 10px 24px;
+  background: linear-gradient(0deg, #1a2b4a 0%, #2b507c 105.38%);
 `;
 
 export const Title = styled.p`

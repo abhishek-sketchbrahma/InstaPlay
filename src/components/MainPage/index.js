@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Navbar from "../Navbar";
-import { BannerSection, MainPageLayout } from "./styles";
+import { BannerSection, MainPageLayout, MovieSection } from "./styles";
 import MovieCard from "../MovieCard";
 import ReactPaginate from "react-paginate";
 import { Container, Image } from "react-bootstrap";
@@ -13,7 +13,7 @@ const MainPage = () => {
   const [moviesListData, setMoviesListData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(null);
-  const [searchedMovieName, setSearchedMovieName] = useState();
+  const [searchedMovieName, setSearchedMovieName] = useState(null);
 
   const getMoviesData = async () => {
     let response = await axios.get(
@@ -39,15 +39,24 @@ const MainPage = () => {
 
   useEffect(() => {
     getMoviesData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   useEffect(() => {
-    if (searchedMovieName) {
-      getMovieListBySearchValue();
-    }
-    if (searchedMovieName?.length === 0) {
-      getMoviesData();
-    }
+    let timeOut = setTimeout(() => {
+      if (searchedMovieName) {
+        getMovieListBySearchValue();
+      }
+      if (searchedMovieName?.length === 0) {
+        getMoviesData();
+      }
+    }, 2000);
+
+    return () => {
+      clearTimeout(timeOut);
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchedMovieName]);
 
   return (
@@ -63,11 +72,10 @@ const MainPage = () => {
         </BannerSection>
       )}
 
-      <Container className='d-flex align-items-center'>
+      <Container>
         <MainPageLayout>
           <h3>{searchedMovieName ? "Search Result" : "Trending"}</h3>
-
-          <div className='d-flex flex-wrap justify-content-start'>
+          <MovieSection>
             {moviesListData?.length ? (
               moviesListData?.map((item) => {
                 return (
@@ -82,9 +90,10 @@ const MainPage = () => {
             ) : (
               <h3>No data found</h3>
             )}
-          </div>
+          </MovieSection>
         </MainPageLayout>
       </Container>
+
       <ReactPaginate
         previousLabel='<'
         nextLabel='>'

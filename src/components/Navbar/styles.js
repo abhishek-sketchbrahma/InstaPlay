@@ -19,8 +19,23 @@ export const NavbarSection = styled.div`
   }
 
   @media (max-width: 1199.98px) {
+    /* flex-direction: column;
+    align-items: start; */
+  }
+  @media (max-width: 575.98px) {
+    padding: 16px 20px;
     flex-direction: column;
     align-items: start;
+
+    .logo {
+      margin-bottom: 16px;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    div {
+      margin: 0;
+    }
   }
 `;
 
@@ -42,7 +57,8 @@ export const CustomInput = styled.div`
     border: 1px solid #687a91;
     border-radius: 5px 0 0 5px;
     padding: 10px 8px;
-    width: 424px;
+    max-width: 424px;
+    width: 100%;
 
     &::placeholder {
       font-family: "Poppins";
@@ -59,7 +75,11 @@ export const CustomInput = styled.div`
   }
 
   @media (max-width: 1199.98px) {
-    margin-top: 16px;
+    /* margin-top: 16px; */
+  }
+  @media (max-width: 767.98px) {
+    /* padding: 16px 20px; */
+    margin-right: 0px;
   }
 `;
 
@@ -75,6 +95,9 @@ export const LogoutBtn = styled.button`
   border: none;
 
   @media (max-width: 1199.98px) {
+    /* display: none; */
+  }
+  @media (max-width: 767.98px) {
     display: none;
   }
 `;

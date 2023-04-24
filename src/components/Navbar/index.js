@@ -5,6 +5,7 @@ import Logo from "../../assets/images/logo.svg";
 import { ToastMessage } from "../../common/toast";
 import { CustomInput, LogoutBtn, NavbarSection } from "./styles";
 import SearchIcon from "../../assets/images/searchIcon.svg";
+import { debounce } from "lodash";
 
 const Navbar = ({ searchedMovieName, setSearchedMovieName }) => {
   const navigate = useNavigate();
@@ -18,12 +19,10 @@ const Navbar = ({ searchedMovieName, setSearchedMovieName }) => {
 
   return (
     <NavbarSection>
-      <div>
-        <Image src={Logo} alt='' />
-      </div>
+      <Image src={Logo} alt='' className='logo' />
 
       {location?.pathname?.includes("home") && (
-        <div className='d-flex'>
+        <div className='d-flex m-0'>
           <CustomInput>
             <input
               placeholder='Search movies'

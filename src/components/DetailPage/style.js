@@ -1,84 +1,125 @@
 import styled from "styled-components";
 
-export const DetailPageSection = styled.div`
-  margin-top: 60px;
+export const DetailPageWrapper = styled.div`
+  color: #fff;
+  font-style: normal;
+  font-family: "Helvetica Neue LT Pro";
+  background: #000;
 
-  .backArrow {
-    height: 32px;
-    width: 32px;
-    margin-bottom: 40px;
+  .containerRow {
+    margin: 0px !important;
 
-    &:hover {
-      cursor: pointer;
+    @media (max-width: 767.98px) {
+      position: relative !important;
+      display: flex;
+      flex-direction: column-reverse;
+    }
+  }
+
+  .containerCol {
+    padding: 0px !important;
+  }
+
+  .imgSection {
+    background-size: cover;
+    height: calc(100vh - 70px);
+    display: flex;
+    justify-content: center;
+    @media (max-width: 767.98px) {
+      height: 375px;
+    }
+    @media (max-width: 575.98px) {
+      height: 260px;
+    }
+
+    img {
+      height: 103px;
+      width: 103px;
+      margin: auto;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .contentSection {
+    background-color: #000;
+
+    img {
+      margin-bottom: 40px;
+      height: 32px;
+      width: 32px;
+      &:hover {
+        cursor: pointer;
+      }
+
+      @media (max-width: 1399.98px) {
+        margin-bottom: 15px;
+      }
     }
   }
 `;
 
-export const MovieTitle = styled.h1`
-  font-family: "Helvetica Neue LT Pro";
-  font-style: normal;
+export const MovieTitle = styled.div`
   font-weight: 500;
   font-size: 42px;
   line-height: 50px;
-  display: flex;
-  align-items: flex-end;
-  color: #ffffff;
   margin-bottom: 12px;
 `;
 
-export const MovieRating = styled.h4`
-  font-family: "Helvetica Neue LT Pro";
-  font-style: normal;
+export const MovieRating = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 20px;
-  color: #ffffff;
   margin-bottom: 12px;
 `;
 
-export const MovieDescription = styled.p`
-  font-family: "Helvetica Neue LT Pro";
-  font-style: normal;
+export const MovieDescription = styled.div`
   font-weight: 400;
   font-size: 20px;
   line-height: 152%;
-  display: flex;
-  align-items: center;
-  color: rgba(255, 255, 255, 0.7);
   margin-bottom: 24px;
 `;
 
 export const ReleaseDate = styled.div`
-  font-family: "Helvetica Neue LT Pro";
-  font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
-  display: flex;
-  align-items: center;
-  color: #ffffff;
   margin-bottom: 20px;
-
-  span {
-    margin-left: 64px;
-  }
 `;
 
 export const OriginalLanguage = styled.div`
-  font-family: "Helvetica Neue LT Pro";
-  font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
-  display: flex;
-  align-items: center;
-  color: #ffffff;
-
-  span {
-    margin-left: 34px;
-  }
 `;
 
-export const DetailPageWrapper = styled.div`
-  background-image: url();
+export const DetailSection = styled.div`
+  max-width: 512px;
+  left: 120px;
+  top: 133px;
+  position: absolute;
+
+  @media (max-width: 1399.98px) {
+    left: 100px;
+  }
+  @media (max-width: 1199.98px) {
+    max-width: 400px;
+    left: 80px;
+  }
+  @media (max-width: 991.98px) {
+    max-width: 350px;
+    top: 90px;
+  }
+  @media (max-width: 767.98px) {
+    position: relative !important;
+    top: 0;
+    margin-bottom: 30px;
+    max-width: 85%;
+  }
+  @media (max-width: 575.98px) {
+    min-width: 335px;
+    max-width: 80%;
+    margin: 0px -61px 20px -61px;
+  }
 `;

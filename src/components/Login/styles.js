@@ -5,7 +5,8 @@ export const SignInContainer = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0px 0px 0px rgba(63, 63, 68, 0.05);
   border-radius: 16px;
-  width: 552px;
+  max-width: 552px;
+  width: 100%;
   padding: 45px 32px;
 
   h4 {
@@ -71,7 +72,10 @@ export const SignInContainer = styled.div`
 
 export const LoginInForm = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 98px auto;
+  justify-content: center;
+  margin: 98px 20px;
+
+  @media (max-width: 768px) {
+    margin: 78px 20px;
+  }
 `;

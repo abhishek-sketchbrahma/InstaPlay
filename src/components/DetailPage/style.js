@@ -123,3 +123,53 @@ export const DetailSection = styled.div`
     margin: 0px -61px 20px -61px;
   }
 `;
+
+export const VideoPlayerContainer = styled.div`
+  height: 100%;
+  width: 100vw;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  top: 0;
+  background-color: rgba(14, 23, 30, 0.8);
+
+  .closeIconContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 900px;
+
+    @media (max-width: 991.98px) {
+      width: 750px;
+    }
+
+    @media (max-width: 767.98px) {
+      width: 550px;
+    }
+
+    @media (max-width: 575.98px) {
+      width: 375px;
+    }
+  }
+
+  .videoPlayer {
+    @media (max-width: 991.98px) {
+      width: 700px;
+      height: 308px;
+    }
+    @media (max-width: 767.98px) {
+      width: 500px;
+      height: 183px;
+    }
+
+    @media (max-width: 575.98px) {
+      width: 375px;
+      height: 200px;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    height: calc(100vh - 60px);
+  }
+`;

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -12,71 +13,103 @@ import {
   OriginalLanguage,
   ReleaseDate,
   DetailSection,
+  VideoPlayerContainer,
 } from "./style";
-import VideoPlayerModal from "../VideoPlayerModal";
 import PlayIcon from "../../assets/images/playIcon.svg";
+import CloseIcon from "../../assets/images/closeIcon.svg";
 
 const DetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [open, setOpen] = useState(false);
-  const handleClose = () => setOpen(false);
-  const handleOpen = () => setOpen(true);
+  const [showVideo, setShowVideo] = useState(false);
   const [movieDetails, setMovieDetails] = useState(null);
+  const [movieLink, setMovieLink] = useState(null);
 
   const getMovieDetail = async () => {
     let movieData = await axios.get(
-      `https://api.themoviedb.org/3/movie/${id}?api_key=abac24cb3472244be1ad075dde55f834&language=en-US`
+      `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
     );
 
     setMovieDetails(movieData?.data);
   };
 
+  const getVideoData = async () => {
+    let response = await axios.get(
+      `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.REACT_APP_API_KEY}`
+    );
+    setMovieLink(response?.data?.results?.[0]?.key);
+  };
+
+  console.log({ movieLink });
+
   useEffect(() => {
     getMovieDetail();
+    getVideoData();
   }, []);
 
   return (
-    <DetailPageWrapper>
-      <Navbar />
+    <>
+      <DetailPageWrapper
+        className={`position-relative ${
+          showVideo && "position-fixed overflow-hidden"
+        }`}
+      >
+        <Navbar />
 
-      <Row className='containerRow position-relative'>
-        <Col md={4} className='containerCol contentSection '>
-          <DetailSection className='position-absolute'>
-            <Image src={LeftArrow} alt='' onClick={() => navigate(-1)} />
-            <MovieTitle>{movieDetails?.original_title}</MovieTitle>
-            <MovieRating>
-              Rating: {Number(movieDetails?.popularity)?.toFixed()}/5
-            </MovieRating>
-            <MovieDescription>{movieDetails?.overview}</MovieDescription>
-            <ReleaseDate>
-              Release Date
-              <span className='ml-5'> {movieDetails?.release_date}</span>
-            </ReleaseDate>
-            <OriginalLanguage>
-              Orginal Language <span>{movieDetails?.original_language}</span>
-            </OriginalLanguage>
-          </DetailSection>
-        </Col>
-        <Col
-          md={8}
-          className='containerCol imgSection'
-          style={{
-            backgroundImage: `linear-gradient(90deg, #000000 0%, rgba(0, 0, 0, 0) 100%), url(https://image.tmdb.org/t/p/w500/${movieDetails?.backdrop_path})`,
-          }}
-        >
-          <Image src={PlayIcon} alt='' onClick={() => setOpen(true)} />
-        </Col>
-      </Row>
+        <Row className='containerRow position-relative'>
+          <Col md={4} className='containerCol contentSection '>
+            <DetailSection className='position-absolute'>
+              <Image src={LeftArrow} alt='' onClick={() => navigate(-1)} />
+              <MovieTitle>{movieDetails?.original_title}</MovieTitle>
+              <MovieRating>
+                Rating: {Number(movieDetails?.popularity)?.toFixed()}/5
+              </MovieRating>
+              <MovieDescription>{movieDetails?.overview}</MovieDescription>
+              <ReleaseDate>
+                Release Date
+                <span className='ml-5'> {movieDetails?.release_date}</span>
+              </ReleaseDate>
+              <OriginalLanguage>
+                Orginal Language <span>{movieDetails?.original_language}</span>
+              </OriginalLanguage>
+            </DetailSection>
+          </Col>
+          <Col
+            md={8}
+            className='containerCol imgSection'
+            style={{
+              backgroundImage: `linear-gradient(90deg, #000000 0%, rgba(0, 0, 0, 0) 100%),
+               url(https://image.tmdb.org/t/p/w500/${movieDetails?.backdrop_path})`,
+            }}
+          >
+            <Image src={PlayIcon} alt='' onClick={() => setShowVideo(true)} />
+          </Col>
+        </Row>
 
-      <VideoPlayerModal
-        open={open}
-        setOpen={setOpen}
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-      />
-    </DetailPageWrapper>
+        {showVideo && (
+          <VideoPlayerContainer className='position-absolute'>
+            <div className='closeIconContainer'>
+              <Image
+                src={CloseIcon}
+                alt=''
+                onClick={() => setShowVideo(false)}
+              />
+            </div>
+            <iframe
+              width='852px'
+              height='374px'
+              src={`https://www.youtube.com/embed/${movieLink}`}
+              title='YouTube video player'
+              frameborder='0'
+              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+              allowfullscreen
+              className='videoPlayer'
+            ></iframe>
+          </VideoPlayerContainer>
+        )}
+      </DetailPageWrapper>
+    </>
   );
 };
 

@@ -19,7 +19,12 @@ const Navbar = ({ searchedMovieName, setSearchedMovieName }) => {
 
   return (
     <NavbarSection>
-      <Image src={Logo} alt='' className='logo' />
+      <Image
+        src={Logo}
+        alt=''
+        className='logo'
+        onClick={() => navigate("/home")}
+      />
 
       {location?.pathname?.includes("home") && (
         <div className='d-flex m-0'>

@@ -8,11 +8,15 @@ export const NavbarSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 1;
+  .logo {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 
   > div {
     margin: auto 56px;

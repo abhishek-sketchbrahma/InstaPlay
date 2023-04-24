@@ -12,6 +12,7 @@
     overflow-x: scroll;
     margin: auto;
     margin-bottom: 30px;
+    
   }
 
 
@@ -57,16 +58,29 @@
     cursor: not-allowed ! important;
   } 
 }
-// .pad{
-//   padding: 0px !important;
-// }
-
-// .mar{
-//   margin: 0px !important;
-// }
 
 .demoImg{
   height: calc(100vh - 90px);
   width: 100%;
   object-fit: cover;
+}
+
+
+
+.videoModal{
+  .modal-dialog{
+   
+  }
+}
+
+.videoPlayer{
+  .modal{
+    width: 998px;
+  }
+  .modal-dialog{
+    .modal-content{
+      width: max-content !important;
+    }
+  }
+
 }

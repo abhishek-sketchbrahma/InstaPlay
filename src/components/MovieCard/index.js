@@ -1,13 +1,18 @@
 import { Card, CardBottomSection, Rating, Title } from "./styled";
 import PlayBtn from "../../assets/images/playIcon.svg";
 import { Image } from "react-bootstrap";
+import Dummy from "../../assets/images/dummy.jpg";
 
 const MovieCard = ({ data }) => {
   console.log(data);
   return (
     <Card>
       <Image
-        src={"https://image.tmdb.org/t/p/w500/" + data?.poster_path ?? ""}
+        src={
+          data?.poster_path
+            ? "https://image.tmdb.org/t/p/w500/" + data?.poster_path
+            : Dummy
+        }
         alt=''
         className='moviePoster'
       />

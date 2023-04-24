@@ -17,6 +17,7 @@ import {
 } from "./style";
 import PlayIcon from "../../assets/images/playIcon.svg";
 import CloseIcon from "../../assets/images/closeIcon.svg";
+import { useCallback } from "react";
 
 const DetailPage = () => {
   const { id } = useParams();
@@ -26,22 +27,22 @@ const DetailPage = () => {
   const [movieDetails, setMovieDetails] = useState(null);
   const [movieLink, setMovieLink] = useState(null);
 
-  const getMovieDetail = async () => {
+  const getMovieDetail = useCallback(async () => {
     let movieData = await axios.get(
       `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
     );
 
     setMovieDetails(movieData?.data);
-  };
+  }, []);
 
-  const getVideoData = async () => {
+  const getVideoData = useCallback(async () => {
     let response = await axios.get(
       `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.REACT_APP_API_KEY}`
     );
     setMovieLink(response?.data?.results?.[0]?.key);
-  };
+  }, []);
 
-  console.log({ movieLink });
+  // console.log({ movieLink });
 
   useEffect(() => {
     getMovieDetail();
@@ -51,9 +52,7 @@ const DetailPage = () => {
   return (
     <>
       <DetailPageWrapper
-        className={`position-relative ${
-          showVideo && "position-fixed overflow-hidden"
-        }`}
+        className={`position-relative ${showVideo && " forSmScreen"}`}
       >
         <Navbar />
 

@@ -6,6 +6,13 @@ export const DetailPageWrapper = styled.div`
   font-family: "Helvetica Neue LT Pro";
   background: #000;
 
+  /* .forSmScreen{} */
+  /* @media (max-width: 575.98px) { */
+  /* position: fixed; */
+  /* height: calc(100vh - 60px); */
+  /* overflow: hidden; */
+  /* } */
+
   .containerRow {
     margin: 0px !important;
 

@@ -7,6 +7,7 @@ import ReactPaginate from "react-paginate";
 import { Container, Image } from "react-bootstrap";
 import Banner from "../../assets/images/banner.svg";
 import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -15,32 +16,32 @@ const MainPage = () => {
   const [totalPage, setTotalPage] = useState(null);
   const [searchedMovieName, setSearchedMovieName] = useState(null);
 
-  const getMoviesData = async () => {
+  const handlePageClick = (e) => {
+    setCurrentPage(e?.selected);
+  };
+
+  const getMoviesData = useCallback(async () => {
     let response = await axios.get(
       `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.REACT_APP_API_KEY}&page=${currentPage}`
     );
 
     setMoviesListData(response?.data?.results);
     setTotalPage(response?.data?.total_pages);
-  };
+  }, [currentPage]);
 
-  const handlePageClick = (e) => {
-    setCurrentPage(e?.selected);
-  };
-
-  const getMovieListBySearchValue = async () => {
+  const getMovieListBySearchValue = useCallback(async () => {
     let newMovieListBySearch = await axios.get(
       `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&query=${searchedMovieName}&page=1&include_adult=false`
     );
 
     setMoviesListData(newMovieListBySearch?.data?.results);
     setTotalPage(newMovieListBySearch?.data?.total_pages);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     getMoviesData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  });
 
   useEffect(() => {
     let timeOut = setTimeout(() => {

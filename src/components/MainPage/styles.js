@@ -6,6 +6,8 @@ export const MainPageLayout = styled.div`
   h3 {
     margin-bottom: 32px;
     margin-left: 5%;
+    margin-top: 50px;
+
     @media (max-width: 1200px) {
       margin-left: 24px;
     }

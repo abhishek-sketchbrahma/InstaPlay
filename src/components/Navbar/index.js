@@ -5,9 +5,13 @@ import Logo from "../../assets/images/logo.svg";
 import { ToastMessage } from "../../common/toast";
 import { CustomInput, LogoutBtn, NavbarSection } from "./styles";
 import SearchIcon from "../../assets/images/searchIcon.svg";
-import { debounce } from "lodash";
 
-const Navbar = ({ searchedMovieName, setSearchedMovieName }) => {
+const Navbar = ({
+  searchedMovieName,
+  setSearchedMovieName,
+  setCurrentPage,
+  setFlag,
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -32,7 +36,11 @@ const Navbar = ({ searchedMovieName, setSearchedMovieName }) => {
             <input
               placeholder='Search movies'
               value={searchedMovieName}
-              onChange={(e) => setSearchedMovieName(e?.target?.value)}
+              onChange={(e) => {
+                setSearchedMovieName(e?.target?.value);
+                setCurrentPage(1);
+                setFlag(1);
+              }}
             />
             <Image src={SearchIcon} alt='' />
           </CustomInput>

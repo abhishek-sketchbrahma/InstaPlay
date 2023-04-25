@@ -4,7 +4,6 @@ import { Image } from "react-bootstrap";
 import Dummy from "../../assets/images/dummy.jpg";
 
 const MovieCard = ({ data }) => {
-  console.log(data);
   return (
     <Card>
       <Image

@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
 import Navbar from "../Navbar";
+import { useEffect, useState, useCallback } from "react";
+import { useNavigate, useParams } from "react-router";
 import LeftArrow from "../../assets/images/leftArrow.svg";
 import { Image, Row, Col } from "react-bootstrap";
 import {
@@ -17,15 +17,14 @@ import {
 } from "./style";
 import PlayIcon from "../../assets/images/playIcon.svg";
 import CloseIcon from "../../assets/images/closeIcon.svg";
-import { useCallback } from "react";
 
 const DetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const [movieLink, setMovieLink] = useState(null);
   const [showVideo, setShowVideo] = useState(false);
   const [movieDetails, setMovieDetails] = useState(null);
-  const [movieLink, setMovieLink] = useState(null);
 
   const getMovieDetail = useCallback(async () => {
     let movieData = await axios.get(
@@ -42,8 +41,6 @@ const DetailPage = () => {
     setMovieLink(response?.data?.results?.[0]?.key);
   }, []);
 
-  // console.log({ movieLink });
-
   useEffect(() => {
     getMovieDetail();
     getVideoData();
@@ -51,12 +48,14 @@ const DetailPage = () => {
 
   return (
     <>
-      <DetailPageWrapper
-        className={`position-relative ${showVideo && " forSmScreen"}`}
-      >
+      <DetailPageWrapper className={`position-relative`}>
         <Navbar />
 
-        <Row className='containerRow position-relative'>
+        <Row
+          className={`containerRow position-relative ${
+            showVideo && "forSmScreen"
+          }`}
+        >
           <Col md={4} className='containerCol contentSection '>
             <DetailSection className='position-absolute'>
               <Image src={LeftArrow} alt='' onClick={() => navigate(-1)} />
@@ -79,7 +78,7 @@ const DetailPage = () => {
             className='containerCol imgSection'
             style={{
               backgroundImage: `linear-gradient(90deg, #000000 0%, rgba(0, 0, 0, 0) 100%),
-               url(https://image.tmdb.org/t/p/w500/${movieDetails?.backdrop_path})`,
+               url(https://image.tmdb.org/t/p/original/${movieDetails?.backdrop_path})`,
             }}
           >
             <Image src={PlayIcon} alt='' onClick={() => setShowVideo(true)} />

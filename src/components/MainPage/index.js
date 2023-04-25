@@ -7,48 +7,61 @@ import ReactPaginate from "react-paginate";
 import { Container, Image } from "react-bootstrap";
 import Banner from "../../assets/images/banner.svg";
 import { useNavigate } from "react-router-dom";
-import { useCallback } from "react";
 
 const MainPage = () => {
   const navigate = useNavigate();
   const [moviesListData, setMoviesListData] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setTotalPage] = useState(null);
   const [searchedMovieName, setSearchedMovieName] = useState(null);
+  const [flag, setFlag] = useState(0);
 
   const handlePageClick = (e) => {
     setCurrentPage(e?.selected);
+    console.log(e?.selected, "aaaaaaaa");
   };
 
-  const getMoviesData = useCallback(async () => {
+  const getMoviesData = async () => {
     let response = await axios.get(
-      `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.REACT_APP_API_KEY}&page=${currentPage}`
+      `https://api.themoviedb.org/3/trending/movie/day?api_key=${
+        process.env.REACT_APP_API_KEY
+      }&page=${currentPage + 1}`
     );
 
     setMoviesListData(response?.data?.results);
     setTotalPage(response?.data?.total_pages);
-  }, [currentPage]);
+  };
 
-  const getMovieListBySearchValue = useCallback(async () => {
+  const getMovieListBySearchValue = async () => {
     let newMovieListBySearch = await axios.get(
-      `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&query=${searchedMovieName}&page=1&include_adult=false`
+      `https://api.themoviedb.org/3/search/movie?api_key=${
+        process.env.REACT_APP_API_KEY
+      }&language=en-US&query=${searchedMovieName}&page=${
+        currentPage + 1
+      }&include_adult=false`
     );
 
     setMoviesListData(newMovieListBySearch?.data?.results);
     setTotalPage(newMovieListBySearch?.data?.total_pages);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   useEffect(() => {
-    getMoviesData();
-  });
+    if (!searchedMovieName) {
+      getMoviesData();
+    } else {
+      getMovieListBySearchValue();
+    }
+  }, [currentPage]);
 
   useEffect(() => {
     let timeOut = setTimeout(() => {
-      if (searchedMovieName) {
+      if (searchedMovieName && flag === 1) {
         getMovieListBySearchValue();
       }
-      if (searchedMovieName?.length === 0) {
+      if (searchedMovieName?.length === 0 && flag === 0) {
+        setFlag(0);
         getMoviesData();
       }
     }, 2000);
@@ -65,6 +78,8 @@ const MainPage = () => {
       <Navbar
         searchedMovieName={searchedMovieName}
         setSearchedMovieName={setSearchedMovieName}
+        setCurrentPage={setCurrentPage}
+        setFlag={setFlag}
       />
 
       {!searchedMovieName && (
@@ -75,7 +90,7 @@ const MainPage = () => {
 
       <Container>
         <MainPageLayout>
-          <h3>{searchedMovieName ? "Search Result" : "Trending"}</h3>
+          <h3>{searchedMovieName ? <span>Search Result</span> : "Trending"}</h3>
           <MovieSection>
             {moviesListData?.length ? (
               moviesListData?.map((item) => {

@@ -9,7 +9,6 @@ const Paginate = ({
   setCurrentPage,
   classNamePaginationBtnArea,
 }) => {
-  console.log({ currentPage });
   return (
     <div className='d-flex'>
       <div
@@ -31,11 +30,11 @@ const Paginate = ({
               <span
                 key={index}
                 onClick={onClick}
-                className={
+                className={`${index + 1 < Number(currentPage) && "d-none"} ${
                   index + 1 === Number(currentPage)
                     ? " selectedBtn "
                     : "normalBtn"
-                }
+                }`}
               >
                 {index + 1}
               </span>

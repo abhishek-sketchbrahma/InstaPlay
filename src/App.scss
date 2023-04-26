@@ -100,3 +100,23 @@
   text-decoration: underline;
 }
 
+.mainPageLoader{
+  display: flex;
+  height: calc(100vh - 200px);
+  align-items: center;
+  justify-content: center;
+}
+.paginationBtnArea{
+  max-width: 350px;
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 0px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+}

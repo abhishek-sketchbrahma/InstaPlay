@@ -38,8 +38,8 @@ const Navbar = ({
               value={searchedMovieName}
               onChange={(e) => {
                 setSearchedMovieName(e?.target?.value);
-                setCurrentPage(0);
-                setFlag(1);
+                // setCurrentPage(0);
+                // setFlag(1);
               }}
             />
             <Image src={SearchIcon} alt='' />

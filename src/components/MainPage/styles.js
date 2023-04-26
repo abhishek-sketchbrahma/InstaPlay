@@ -45,8 +45,8 @@ export const MovieSection = styled.div`
   } */
 
   @media (max-width: 1200px) {
-    > div {
+    /* > div {
       width: auto;
-    }
+    } */
   }
 `;

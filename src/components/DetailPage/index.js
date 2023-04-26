@@ -17,8 +17,10 @@ import {
 } from "./style";
 import PlayIcon from "../../assets/images/playIcon.svg";
 import CloseIcon from "../../assets/images/closeIcon.svg";
+import { useLocation } from "react-router-dom";
 
 const DetailPage = () => {
+  const location = useLocation();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -58,7 +60,18 @@ const DetailPage = () => {
         >
           <Col md={4} className='containerCol contentSection '>
             <DetailSection className='position-absolute'>
-              <Image src={LeftArrow} alt='' onClick={() => navigate(-1)} />
+              <Image
+                src={LeftArrow}
+                alt=''
+                onClick={() =>
+                  navigate("/home", {
+                    state: {
+                      currentPage: location?.state?.currentPage,
+                      searchedMovieName: location?.state?.searchedMovieName,
+                    },
+                  })
+                }
+              />
               <MovieTitle>{movieDetails?.original_title}</MovieTitle>
               <MovieRating>
                 Rating: {Number(movieDetails?.popularity)?.toFixed()}/5

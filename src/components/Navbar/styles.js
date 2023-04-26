@@ -4,7 +4,7 @@ export const NavbarSection = styled.div`
   background: #263f61;
   font-size: 32px;
   color: #fff;
-  padding: 12px 43px 10px 43px;
+  padding: 13px 43px 13px 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -61,8 +61,10 @@ export const CustomInput = styled.div`
     border: 1px solid #687a91;
     border-radius: 5px 0 0 5px;
     padding: 10px 8px;
+    width: 424px;
+    /* 
     max-width: 424px;
-    width: 100%;
+    width: 100%; */
 
     &::placeholder {
       font-family: "Poppins";
@@ -80,9 +82,14 @@ export const CustomInput = styled.div`
 
   @media (max-width: 1199.98px) {
     /* margin-top: 16px; */
+    max-width: 350px;
+    width: auto;
   }
   @media (max-width: 767.98px) {
     /* padding: 16px 20px; */
+    max-width: 300px;
+    width: auto;
+    /* max-width: 250px; */
     margin-right: 0px;
   }
 `;

@@ -9,6 +9,13 @@ export const SignInContainer = styled.div`
   width: 100%;
   padding: 45px 32px;
 
+  .err {
+    bottom: -30px;
+  }
+  .apiErrMessage {
+    font-size: small;
+  }
+
   h4 {
     font-family: "Helvetica Neue";
     font-style: normal;
@@ -44,7 +51,7 @@ export const SignInContainer = styled.div`
     }
   }
   .inputFeild {
-    margin-bottom: 19px;
+    margin-bottom: 38px;
   }
 
   button {
@@ -66,7 +73,6 @@ export const SignInContainer = styled.div`
   }
   .errorMessage {
     color: red;
-    margin-bottom: 19px;
   }
 `;
 

@@ -17,9 +17,9 @@ export const Card = styled.div`
 
   .moviePoster {
     object-fit: cover;
-    scale: 100%;
-    min-width: 280px;
-    max-height: 137px;
+    /* scale: 100%; */
+    /* min-width: 280px;
+    max-height: 137px; */
   }
 
   .playIcon {

@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const DetailPageWrapper = styled.div`
   color: #fff;
   font-style: normal;
-  font-family: "Helvetica Neue LT Pro";
+  font-family: "Helvetica Neue";
   background: #000;
 
   .forSmScreen {

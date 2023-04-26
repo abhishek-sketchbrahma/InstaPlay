@@ -12,6 +12,7 @@ import { SignInContainer, LoginInForm } from "./styles";
 const Login = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [errMsg, setErrMsg] = useState(null);
 
   const onSubmitLoginForm = async (data) => {
     setIsLoading(true);
@@ -29,13 +30,16 @@ const Login = () => {
       .then((res) => {
         if (res?.data?.success) {
           localStorage.setItem("Token", res?.data?.request_token);
-          ToastMessage("Log in Successfully", "success");
+          ToastMessage("Logged in Successfully", "success");
           navigate("/home");
         }
       })
       .catch((err) => {
         if (!err?.response?.data?.success) {
-          ToastMessage("Invaild details");
+          setErrMsg(err?.response?.data?.status_message);
+          setTimeout(() => {
+            setErrMsg(null);
+          }, 2000);
         }
       })
       .finally(() => {
@@ -66,18 +70,20 @@ const Login = () => {
           <p>Sign in to your Self Service Portal</p>
 
           <form onSubmit={formik.handleSubmit}>
-            <div className='inputFeild'>
+            <div className='inputFeild position-relative'>
               <input
                 id='username'
                 type='text'
-                placeholder='User name'
+                placeholder='Username'
                 {...formik.getFieldProps("username")}
               />
               {formik.touched.username && formik.errors.username ? (
-                <div className='errorMessage'>{formik.errors.username}</div>
+                <div className='errorMessage position-absolute err'>
+                  {formik.errors.username}
+                </div>
               ) : null}
             </div>
-            <div className='inputFeild'>
+            <div className='inputFeild position-relative'>
               <input
                 id='password'
                 type='password'
@@ -85,8 +91,15 @@ const Login = () => {
                 {...formik.getFieldProps("password")}
               />
               {formik.touched.password && formik.errors.password ? (
-                <div className='errorMessage'>{formik.errors.password}</div>
+                <div className='errorMessage position-absolute err'>
+                  {formik.errors.password}
+                </div>
               ) : null}
+              {
+                <div className='errorMessage position-absolute err apiErrMessage'>
+                  {errMsg}
+                </div>
+              }
             </div>
             <button type='submit' disabled={isLoading}>
               {isLoading ? <Loader /> : "Log In"}

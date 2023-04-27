@@ -1,14 +1,11 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./components/Login";
 import "./App.scss";
-import axios from "axios";
-import { useEffect } from "react";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import MainPage from "./components/MainPage";
+import Login from "./components/Login";
 import AuthGuard from "./common/AuthGuard";
+import MainPage from "./components/MainPage";
+import { ToastContainer } from "react-toastify";
 import DetailPage from "./components/DetailPage";
-import { useCallback } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const App = () => {
   return (

@@ -1,10 +1,28 @@
 import styled from "styled-components";
 
 export const DetailPageWrapper = styled.div`
+  width: 100%;
+  position: relative;
   color: #fff;
   font-style: normal;
   font-family: "Helvetica Neue";
   background: #000;
+  height: 100vh;
+
+  .navigationArrowOnImage {
+    position: absolute;
+    z-index: 99999999999;
+    display: none;
+
+    @media (max-width: 767.98px) {
+      display: block;
+      left: 26px;
+      top: 86px;
+    }
+    @media (max-width: 575.98px) {
+      top: 110px;
+    }
+  }
 
   .forSmScreen {
     @media (max-width: 575.98px) {
@@ -29,9 +47,12 @@ export const DetailPageWrapper = styled.div`
 
   .imgSection {
     background-size: cover;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 71px);
     display: flex;
     justify-content: center;
+    @media (max-width: 1199.98px) {
+      justify-content: end;
+    }
     @media (max-width: 767.98px) {
       height: 375px;
     }
@@ -45,6 +66,13 @@ export const DetailPageWrapper = styled.div`
       margin: auto;
       &:hover {
         cursor: pointer;
+      }
+
+      @media (max-width: 1199.98px) {
+        margin: auto 30%;
+      }
+      @media (max-width: 767.98px) {
+        margin: auto;
       }
     }
   }
@@ -72,6 +100,12 @@ export const MovieTitle = styled.div`
   font-size: 42px;
   line-height: 50px;
   margin-bottom: 12px;
+  @media (max-width: 767.98px) {
+    margin-top: 20px;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+  }
 `;
 
 export const MovieRating = styled.div`
@@ -79,6 +113,11 @@ export const MovieRating = styled.div`
   font-size: 16px;
   line-height: 20px;
   margin-bottom: 12px;
+  @media (max-width: 767.98px) {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+  }
 `;
 
 export const MovieDescription = styled.div`
@@ -86,6 +125,18 @@ export const MovieDescription = styled.div`
   font-size: 20px;
   line-height: 152%;
   margin-bottom: 24px;
+  /* max-height: 186px;
+  overflow-y: scroll; */
+  color: rgba(255, 255, 255, 0.7);
+
+  @media (max-width: 767.98px) {
+    height: auto;
+    overflow-y: hidden;
+  }
+  @media (max-width: 575.98px) {
+    font-size: 16px;
+    line-height: 152%;
+  }
 `;
 
 export const ReleaseDate = styled.div`
@@ -93,90 +144,52 @@ export const ReleaseDate = styled.div`
   font-size: 16px;
   line-height: 19px;
   margin-bottom: 20px;
+  .date {
+    margin-left: 64px;
+  }
+  @media (max-width: 767.98px) {
+    font-size: 14px;
+    line-height: 17px;
+  }
 `;
 
 export const OriginalLanguage = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
+  .language {
+    margin-left: 34px;
+  }
+
+  @media (max-width: 767.98px) {
+    font-size: 14px;
+    line-height: 17px;
+    .language {
+      margin-left: 40px;
+    }
+  }
 `;
 
 export const DetailSection = styled.div`
-  max-width: 512px;
-  left: 120px;
-  top: 133px;
+  max-width: 53%;
+  left: 53px;
+  top: 71px;
   position: absolute;
 
-  @media (max-width: 1399.98px) {
-    left: 100px;
-  }
-  @media (max-width: 1199.98px) {
-    max-width: 400px;
-    left: 80px;
-  }
-  @media (max-width: 991.98px) {
-    max-width: 350px;
-    top: 90px;
-  }
   @media (max-width: 767.98px) {
     position: relative !important;
     top: 0;
-    margin-bottom: 30px;
+    margin-bottom: 31px;
     max-width: 85%;
+
+    .navigationArrow {
+      display: none;
+    }
   }
   @media (max-width: 575.98px) {
-    min-width: 335px;
-    max-width: 80%;
-    margin: 0px -61px 20px -61px;
+    left: 20px;
+    max-width: 92%;
   }
 `;
 
-export const VideoPlayerContainer = styled.div`
-  height: 100%;
-  width: 100vw;
-  display: flex;
-  -webkit-box-pack: center;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  top: 0;
-  background-color: rgba(14, 23, 30, 0.8);
-
-  .closeIconContainer {
-    display: flex;
-    flex-direction: row-reverse;
-    width: 900px;
-
-    @media (max-width: 991.98px) {
-      width: 750px;
-    }
-
-    @media (max-width: 767.98px) {
-      width: 550px;
-    }
-
-    @media (max-width: 575.98px) {
-      width: 375px;
-    }
-  }
-
-  .videoPlayer {
-    @media (max-width: 991.98px) {
-      width: 700px;
-      height: 308px;
-    }
-    @media (max-width: 767.98px) {
-      width: 500px;
-      height: 183px;
-    }
-
-    @media (max-width: 575.98px) {
-      width: 375px;
-      height: 200px;
-    }
-  }
-
-  @media (max-width: 575.98px) {
-    height: calc(100vh - 60px);
-  }
-`;
+export const VideoPlayerContainer = styled.div``;

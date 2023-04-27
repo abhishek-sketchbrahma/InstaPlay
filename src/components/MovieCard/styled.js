@@ -48,8 +48,15 @@ export const Card = styled.div`
 `;
 
 export const CardBottomSection = styled.div`
-  padding: 10px 24px;
+  padding: 10px 24px 10px 24px;
   background: linear-gradient(0deg, #1a2b4a 0%, #2b507c 105.38%);
+
+  @media (max-width: 1399.98px) {
+    /* padding: 8px 20px 40% 20px; */
+  }
+  @media (max-width: 991.98px) {
+    padding: 5px 24px;
+  }
 `;
 
 export const Title = styled.div`
@@ -84,7 +91,7 @@ export const ImageContainer = styled.div`
   position: relative;
   width: 100%;
   height: 0;
-  padding-bottom: 50%;
+  padding-bottom: 48%;
   background-color: linear-gradient(
     0deg,
     rgb(26, 43, 74) 0%,

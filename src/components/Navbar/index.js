@@ -2,16 +2,10 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../../assets/images/logo.svg";
-import { ToastMessage } from "../../common/toast";
 import { CustomInput, LogoutBtn, NavbarSection } from "./styles";
 import SearchIcon from "../../assets/images/searchIcon.svg";
 
-const Navbar = ({
-  searchedMovieName,
-  setSearchedMovieName,
-  setCurrentPage,
-  setFlag,
-}) => {
+const Navbar = ({ searchedMovieName, setSearchedMovieName }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -37,8 +31,6 @@ const Navbar = ({
               value={searchedMovieName ?? ""}
               onChange={(e) => {
                 setSearchedMovieName(e?.target?.value);
-                // setCurrentPage(0);
-                // setFlag(1);
               }}
             />
             <Image src={SearchIcon} alt='' />

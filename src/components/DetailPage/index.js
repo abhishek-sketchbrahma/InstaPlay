@@ -18,10 +18,11 @@ import {
 import PlayIcon from "../../assets/images/playIcon.svg";
 import CloseIcon from "../../assets/images/closeIcon.svg";
 import { useLocation } from "react-router-dom";
+import Dummy from "../../assets/images/dummy.jpg";
+import VideoPlayer from "../VideoPlayer";
 
 const DetailPage = () => {
   const location = useLocation();
-  console.log({ location });
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -30,6 +31,8 @@ const DetailPage = () => {
   const [movieDetails, setMovieDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingModal, setIsLoadingModal] = useState(false);
+
+  var movieRating = Number((movieDetails?.vote_average / 2).toFixed());
 
   const getMovieDetail = useCallback(async () => {
     setIsLoading(true);
@@ -63,16 +66,24 @@ const DetailPage = () => {
     getMovieDetail();
   }, []);
 
-  // useEffect(() => {
-  //   if (showVideo) {
-  //     getVideoData();
-  //   }
-  // }, [showVideo]);
-
   return (
     <>
-      <DetailPageWrapper className={`position-relative`}>
+      <DetailPageWrapper>
         <Navbar />
+        <Image
+          src={LeftArrow}
+          alt=''
+          onClick={() =>
+            navigate("/home", {
+              state: {
+                currentPage: location?.state?.currentPage,
+                searchedMovieName: location?.state?.searchedMovieName,
+              },
+            })
+          }
+          className='navigationArrowOnImage'
+        />
+
         {isLoading ? (
           <div className='detailPageLoader'>
             <h1>Loading...</h1>
@@ -96,19 +107,20 @@ const DetailPage = () => {
                       },
                     })
                   }
+                  className='navigationArrow'
                 />
                 <MovieTitle>{movieDetails?.original_title}</MovieTitle>
-                <MovieRating>
-                  Rating: {Number(movieDetails?.popularity)?.toFixed()}/5
-                </MovieRating>
+                <MovieRating>Rating: {movieRating}/5</MovieRating>
                 <MovieDescription>{movieDetails?.overview}</MovieDescription>
                 <ReleaseDate>
                   Release Date
-                  <span className='ml-5'> {movieDetails?.release_date}</span>
+                  <span className='date'> {movieDetails?.release_date}</span>
                 </ReleaseDate>
                 <OriginalLanguage>
-                  Orginal Language{" "}
-                  <span>{movieDetails?.original_language}</span>
+                  Orginal Language
+                  <span className='language'>
+                    {movieDetails?.original_language}
+                  </span>
                 </OriginalLanguage>
               </DetailSection>
             </Col>
@@ -117,7 +129,11 @@ const DetailPage = () => {
               className='containerCol imgSection'
               style={{
                 backgroundImage: `linear-gradient(90deg, #000000 0%, rgba(0, 0, 0, 0) 100%),
-             url(https://image.tmdb.org/t/p/original/${movieDetails?.backdrop_path})`,
+             url(${
+               movieDetails?.backdrop_path
+                 ? `https://image.tmdb.org/t/p/original/${movieDetails?.backdrop_path}`
+                 : Dummy
+             })`,
               }}
             >
               <Image
@@ -131,35 +147,12 @@ const DetailPage = () => {
             </Col>
           </Row>
         )}
-
-        {showVideo && (
-          <VideoPlayerContainer className='position-absolute'>
-            <div className='closeIconContainer'>
-              <Image
-                src={CloseIcon}
-                alt=''
-                onClick={() => setShowVideo(false)}
-              />
-            </div>
-            {isLoadingModal ? (
-              <div>
-                <h1>Loading...</h1>
-              </div>
-            ) : (
-              <iframe
-                width='852px'
-                height='374px'
-                src={`https://www.youtube.com/embed/${movieLink}`}
-                title='YouTube video player'
-                frameborder='0'
-                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                allowfullscreen
-                className='videoPlayer'
-              ></iframe>
-            )}
-          </VideoPlayerContainer>
-        )}
       </DetailPageWrapper>
+      <VideoPlayer
+        show={showVideo}
+        handleClose={() => setShowVideo(false)}
+        movieLink={movieLink}
+      />
     </>
   );
 };

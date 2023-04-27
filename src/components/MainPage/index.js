@@ -97,6 +97,7 @@ const MainPage = () => {
 
   useEffect(() => {
     navigate("/home", {});
+
     setCurrentPage(0);
     return () => setMoviesListData(null);
   }, []);
@@ -115,7 +116,7 @@ const MainPage = () => {
       </BannerSection>
 
       {isLoading ? (
-        <div>
+        <div className='d-flex align-items-center justify-content-center'>
           <h1 style={{ color: "white" }}>Loading...</h1>
         </div>
       ) : (

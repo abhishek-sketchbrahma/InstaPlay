@@ -17,7 +17,6 @@ const Navbar = ({
 
   const onLogout = () => {
     localStorage.removeItem("Token");
-    ToastMessage("Logged out Successfully", "success");
     navigate("/");
   };
 
@@ -35,7 +34,7 @@ const Navbar = ({
           <CustomInput>
             <input
               placeholder='Search movies'
-              value={searchedMovieName}
+              value={searchedMovieName ?? ""}
               onChange={(e) => {
                 setSearchedMovieName(e?.target?.value);
                 // setCurrentPage(0);

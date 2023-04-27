@@ -84,4 +84,8 @@ export const LoginInForm = styled.div`
   @media (max-width: 768px) {
     margin: 78px 20px;
   }
+
+  @media (max-width: 576px) {
+    margin: 60px 20px;
+  }
 `;

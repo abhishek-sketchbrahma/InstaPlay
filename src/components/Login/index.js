@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as Yup from "yup";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 
@@ -13,6 +13,19 @@ const Login = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [errMsg, setErrMsg] = useState(null);
+  const [reqToken, setReqToken] = useState(null);
+
+  const getReqToken = useCallback(async () => {
+    let reqTokenData = await axios.get(
+      "https://api.themoviedb.org/3/authentication/token/new?api_key=abac24cb3472244be1ad075dde55f834"
+    );
+    reqTokenData?.data?.request_token &&
+      setReqToken(reqTokenData?.data?.request_token);
+  }, []);
+
+  useEffect(() => {
+    getReqToken();
+  });
 
   const onSubmitLoginForm = async (data) => {
     setIsLoading(true);
@@ -20,7 +33,7 @@ const Login = () => {
     const formData = new FormData();
     formData.append("username", data?.username);
     formData.append("password", data.password);
-    formData.append("request_token", localStorage.getItem("getReqToken"));
+    formData.append("request_token", reqToken);
 
     axios
       .post(
@@ -37,9 +50,6 @@ const Login = () => {
       .catch((err) => {
         if (!err?.response?.data?.success) {
           setErrMsg(err?.response?.data?.status_message);
-          setTimeout(() => {
-            setErrMsg(null);
-          }, 2000);
         }
       })
       .finally(() => {

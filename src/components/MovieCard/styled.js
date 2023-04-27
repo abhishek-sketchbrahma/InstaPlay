@@ -1,31 +1,45 @@
 import styled from "styled-components";
 
 export const Card = styled.div`
-  min-height: "178px";
-  min-width: "280px";
+  width: 100%;
+  height: 0;
+  padding-bottom: 63%;
   margin: 16px 8px;
-  display: flex;
+
+  /* min-height: "178px";
+  min-width: "280px"; */
+  /* display: flex;
   flex-direction: column;
+  overflow: hidden; */
+
+  /* @media (max-width: 991.98px) {
+  }
 
   @media (max-width: 575.98px) {
-    min-width: 335px;
   }
 
   @media (max-width: 375px) {
-    max-width: 300px;
-  }
+  } */
 
   .moviePoster {
+    position: absolute;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    /* scale: 100%; */
-    /* min-width: 280px;
-    max-height: 137px; */
+    top: 0;
+    left: 0;
+    /* object-fit: cover;
+    scale: 100%;
+    min-width: 280px;
+    max-height: 137px;
+    aspect-ratio: 28%; */
   }
 
   .playIcon {
     height: 32px;
     width: 32px;
     object-fit: none;
+    margin: 6.5px 0;
   }
 
   &:hover {
@@ -38,7 +52,7 @@ export const CardBottomSection = styled.div`
   background: linear-gradient(0deg, #1a2b4a 0%, #2b507c 105.38%);
 `;
 
-export const Title = styled.p`
+export const Title = styled.div`
   font-family: "Poppins";
   font-style: normal;
   font-weight: 500;
@@ -51,9 +65,12 @@ export const Title = styled.p`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  @media (max-width: 991.98px) {
+    width: 120px;
+  }
 `;
 
-export const Rating = styled.p`
+export const Rating = styled.div`
   font-family: "Poppins";
   font-style: normal;
   font-weight: 400;
@@ -61,4 +78,16 @@ export const Rating = styled.p`
   line-height: 140%;
   color: #ccc;
   margin-bottom: 0px;
+`;
+
+export const ImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 50%;
+  background-color: linear-gradient(
+    0deg,
+    rgb(26, 43, 74) 0%,
+    rgb(43, 80, 124) 105.38%
+  );
 `;

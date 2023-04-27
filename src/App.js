@@ -11,18 +11,6 @@ import DetailPage from "./components/DetailPage";
 import { useCallback } from "react";
 
 const App = () => {
-  const getReqToken = useCallback(async () => {
-    let reqTokenData = await axios.get(
-      "https://api.themoviedb.org/3/authentication/token/new?api_key=abac24cb3472244be1ad075dde55f834"
-    );
-    reqTokenData?.data?.request_token &&
-      localStorage.setItem("getReqToken", reqTokenData?.data?.request_token);
-  }, []);
-
-  useEffect(() => {
-    getReqToken();
-  });
-
   return (
     <>
       <BrowserRouter>

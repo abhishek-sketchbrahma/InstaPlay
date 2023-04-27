@@ -38,7 +38,7 @@ export const BannerSection = styled.div`
 export const MovieSection = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: start;
+  /* justify-content: start; */
 
   /* > div {
     width: 25%;

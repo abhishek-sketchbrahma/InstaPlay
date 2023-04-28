@@ -1,70 +1,87 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
+import ReactPaginate from "react-paginate";
 import { useEffect, useState } from "react";
-import Navbar from "../Navbar";
-import { BannerSection, MovieSection } from "./styles";
-import MovieCard from "../MovieCard";
 import { Col, Image } from "react-bootstrap";
-import Banner from "../../assets/images/banner.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import ReactPaginate from "react-paginate";
+import Navbar from "../Navbar";
+import MovieCard from "../MovieCard";
+import Banner from "../../assets/images/banner.svg";
+import { BannerSection, MovieSection } from "./styles";
 
 const MainPage = () => {
   const navigate = useNavigate();
-
   const location = useLocation();
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [totalPage, setTotalPage] = useState(null);
-  const [moviesListData, setMoviesListData] = useState(null);
-  const [showBanner, setShowBanner] = useState(true);
 
+  const [mainPageState, setMainPageState] = useState({
+    isLoading: false,
+    currentPage: 0,
+    totalPage: null,
+    showBanner: true,
+  });
+
+  const [moviesListData, setMoviesListData] = useState(null);
   const [searchedMovieName, setSearchedMovieName] = useState(null);
 
   const getMoviesData = async () => {
-    setIsLoading(true);
-    await axios
-      .get(
+    setMainPageState({ ...mainPageState, isLoading: true });
+    try {
+      let response = await axios.get(
         `https://api.themoviedb.org/3/trending/movie/day?api_key=${
           process.env.REACT_APP_API_KEY
-        }&page=${currentPage + 1}`
-      )
-      .then((response) => {
-        setMoviesListData(response?.data?.results);
-        setTotalPage(response?.data?.total_pages);
-      })
-      .finally(() => {
-        setIsLoading(false);
-        setShowBanner(true);
+        }&page=${mainPageState?.currentPage + 1}`
+      );
+
+      setMoviesListData(response?.data?.results);
+      setMainPageState({
+        ...mainPageState,
+        isLoading: false,
+        totalPage: response?.data?.total_pages,
+        showBanner: true,
       });
+    } catch (err) {
+      setMainPageState({
+        ...mainPageState,
+        isLoading: false,
+        showBanner: true,
+      });
+    }
   };
 
   const getMovieListBySearchValue = async () => {
-    setIsLoading(true);
-    await axios
-      .get(
+    setMainPageState({ ...mainPageState, isLoading: true });
+
+    try {
+      let response = await axios.get(
         `https://api.themoviedb.org/3/search/movie?api_key=${
           process.env.REACT_APP_API_KEY
         }&language=en-US&query=${searchedMovieName}&page=${
-          currentPage + 1
+          mainPageState?.currentPage + 1
         }&include_adult=false`
-      )
-      .then((response) => {
-        setMoviesListData(response?.data?.results);
-        setTotalPage(response?.data?.total_pages);
-      })
-      .finally(() => {
-        setIsLoading(false);
-        setShowBanner(false);
+      );
+
+      setMoviesListData(response?.data?.results);
+      setMainPageState({
+        ...mainPageState,
+        isLoading: false,
+        totalPage: response?.data?.total_pages,
+        showBanner: false,
       });
+    } catch (err) {
+      setMainPageState({
+        ...mainPageState,
+        isLoading: false,
+        showBanner: false,
+      });
+    }
   };
 
   useEffect(() => {
     if (!searchedMovieName) {
       getMoviesData();
     }
-  }, [searchedMovieName, currentPage]);
+  }, [searchedMovieName, mainPageState?.currentPage]);
 
   useEffect(() => {
     let timer;
@@ -72,19 +89,22 @@ const MainPage = () => {
       timer = setTimeout(() => {
         getMovieListBySearchValue();
 
-        setShowBanner(true);
+        setMainPageState({ ...mainPageState, showBanner: true });
       }, 300);
     }
     return () => {
       clearTimeout(timer);
       setMoviesListData(null);
     };
-  }, [searchedMovieName, currentPage]);
+  }, [searchedMovieName, mainPageState?.currentPage]);
 
   useEffect(() => {
     setTimeout(() => {
       if (location?.state?.currentPage) {
-        setCurrentPage(location?.state?.currentPage);
+        setMainPageState({
+          ...mainPageState,
+          currentPage: location?.state?.currentPage,
+        });
       }
       if (location?.state?.searchedMovieName) {
         setSearchedMovieName(location?.state?.searchedMovieName);
@@ -97,8 +117,11 @@ const MainPage = () => {
 
   useEffect(() => {
     navigate("/home", {});
+    setMainPageState({
+      ...mainPageState,
+      currentPage: 0,
+    });
 
-    setCurrentPage(0);
     return () => setMoviesListData(null);
   }, []);
 
@@ -108,21 +131,24 @@ const MainPage = () => {
         searchedMovieName={searchedMovieName}
         setSearchedMovieName={(e) => {
           setSearchedMovieName(e);
-          setCurrentPage(0);
+          setMainPageState({
+            ...mainPageState,
+            currentPage: 0,
+          });
         }}
       />
       <BannerSection>
         <Image src={Banner} alt='' />
       </BannerSection>
 
-      {isLoading ? (
+      {mainPageState?.isLoading ? (
         <div className='d-flex align-items-center justify-content-center'>
-          <h1 style={{ color: "white" }}>Loading...</h1>
+          <h1>Loading...</h1>
         </div>
       ) : (
         <div className='mainPageContentWrapper'>
           <div>
-            {showBanner ? (
+            {mainPageState?.showBanner ? (
               <h3 className='mainPageTitle'>Trending</h3>
             ) : (
               <h3 className='mainPageTitle search'>Search result</h3>
@@ -147,7 +173,10 @@ const MainPage = () => {
                         onClick={() =>
                           item?.id &&
                           navigate(`/details/${item?.id}`, {
-                            state: { currentPage, searchedMovieName },
+                            state: {
+                              currentPage: mainPageState?.currentPage,
+                              searchedMovieName,
+                            },
                           })
                         }
                         index={index}
@@ -168,14 +197,19 @@ const MainPage = () => {
       <ReactPaginate
         previousLabel='<'
         nextLabel='>'
-        breakLabel={<span style={{ color: "white", padding: "4px" }}>...</span>}
-        pageCount={totalPage}
-        onPageChange={(e) => setCurrentPage(e?.selected)}
+        breakLabel={<span className='paginationBreak'>...</span>}
+        pageCount={mainPageState?.totalPage}
+        onPageChange={(e) =>
+          setMainPageState({
+            ...mainPageState,
+            currentPage: e?.selected,
+          })
+        }
         pageRangeDisplayed={5}
         containerClassName='pagination customPagination'
         pageClassName='page-item'
         pageLinkClassName='page-link'
-        forcePage={currentPage}
+        forcePage={mainPageState?.currentPage}
       />
     </div>
   );

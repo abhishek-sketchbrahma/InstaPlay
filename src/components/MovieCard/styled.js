@@ -1,25 +1,10 @@
 import styled from "styled-components";
 
 export const Card = styled.div`
-  width: 100%;
+  width: auto;
   height: 0;
   padding-bottom: 63%;
   margin: 16px 8px;
-
-  /* min-height: "178px";
-  min-width: "280px"; */
-  /* display: flex;
-  flex-direction: column;
-  overflow: hidden; */
-
-  /* @media (max-width: 991.98px) {
-  }
-
-  @media (max-width: 575.98px) {
-  }
-
-  @media (max-width: 375px) {
-  } */
 
   .moviePoster {
     position: absolute;
@@ -28,11 +13,12 @@ export const Card = styled.div`
     object-fit: cover;
     top: 0;
     left: 0;
-    /* object-fit: cover;
-    scale: 100%;
-    min-width: 280px;
-    max-height: 137px;
-    aspect-ratio: 28%; */
+
+    &:hover {
+      transform: scale(1.1);
+      transition: all 1s ease-in-out;
+      z-index: -9999;
+    }
   }
 
   .playIcon {
@@ -48,12 +34,20 @@ export const Card = styled.div`
 `;
 
 export const CardBottomSection = styled.div`
+  position: relative;
+  display: flex;
   padding: 10px 24px 10px 24px;
   background: linear-gradient(0deg, #1a2b4a 0%, #2b507c 105.38%);
+  flex: 1;
 
-  @media (max-width: 1399.98px) {
-    /* padding: 8px 20px 40% 20px; */
+  .playIcon {
+    position: absolute;
+    right: 9%;
   }
+  .cardDetails {
+    width: 100%;
+  }
+
   @media (max-width: 991.98px) {
     padding: 5px 24px;
   }
@@ -66,7 +60,8 @@ export const Title = styled.div`
   font-size: 16px;
   line-height: 140%;
   color: #ffffff;
-  width: 172px;
+  width: calc(100% - 40px) !important;
+  height: 20px;
   margin-bottom: 3px;
 
   white-space: nowrap;
@@ -97,4 +92,5 @@ export const ImageContainer = styled.div`
     rgb(26, 43, 74) 0%,
     rgb(43, 80, 124) 105.38%
   );
+  overflow: hidden;
 `;

@@ -21,6 +21,7 @@ export const DetailPageWrapper = styled.div`
     }
     @media (max-width: 575.98px) {
       top: 110px;
+      left: 17px;
     }
   }
 
@@ -73,6 +74,7 @@ export const DetailPageWrapper = styled.div`
       }
       @media (max-width: 767.98px) {
         margin: auto;
+        height: 50px;
       }
     }
   }
@@ -125,8 +127,6 @@ export const MovieDescription = styled.div`
   font-size: 20px;
   line-height: 152%;
   margin-bottom: 24px;
-  /* max-height: 186px;
-  overflow-y: scroll; */
   color: rgba(255, 255, 255, 0.7);
 
   @media (max-width: 767.98px) {
@@ -187,7 +187,7 @@ export const DetailSection = styled.div`
     }
   }
   @media (max-width: 575.98px) {
-    left: 20px;
+    left: 22px;
     max-width: 92%;
   }
 `;

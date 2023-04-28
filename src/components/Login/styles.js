@@ -38,7 +38,6 @@ export const SignInContainer = styled.div`
   }
 
   input {
-    /* margin-bottom: 19px; */
     background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0px 0px 0px rgb(63 63 68 / 5%);

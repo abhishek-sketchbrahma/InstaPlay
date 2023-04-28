@@ -1,24 +1,49 @@
-import "./App.scss";
+import { lazy, Suspense } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import Login from "./components/Login";
-import AuthGuard from "./common/AuthGuard";
-import MainPage from "./components/MainPage";
-import { ToastContainer } from "react-toastify";
-import DetailPage from "./components/DetailPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import "./App.scss";
+import AuthGuard from "./common/AuthGuard";
+import { ToastContainer } from "react-toastify";
+
+const Login = lazy(() => import("./components/Login"));
+const MainPage = lazy(() => import("./components/MainPage"));
+const DetailPage = lazy(() => import("./components/DetailPage"));
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route exact path='/' element={<Login />} />
+          <Route
+            exact
+            path='/'
+            element={
+              <Suspense
+                fallback={
+                  <div>
+                    <h1>Loading...</h1>
+                  </div>
+                }
+              >
+                <Login />
+              </Suspense>
+            }
+          />
           <Route
             exact
             path='/home'
             element={
               <AuthGuard>
-                <MainPage />
+                <Suspense
+                  fallback={
+                    <div>
+                      <h1>Loading...</h1>
+                    </div>
+                  }
+                >
+                  <MainPage />
+                </Suspense>
               </AuthGuard>
             }
           />
@@ -28,7 +53,15 @@ const App = () => {
             path='/details/:id'
             element={
               <AuthGuard>
-                <DetailPage />
+                <Suspense
+                  fallback={
+                    <div>
+                      <h1>Loading...</h1>
+                    </div>
+                  }
+                >
+                  <DetailPage />
+                </Suspense>
               </AuthGuard>
             }
           />

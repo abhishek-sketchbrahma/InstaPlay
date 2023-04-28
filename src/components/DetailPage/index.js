@@ -13,10 +13,8 @@ import {
   OriginalLanguage,
   ReleaseDate,
   DetailSection,
-  VideoPlayerContainer,
 } from "./style";
 import PlayIcon from "../../assets/images/playIcon.svg";
-import CloseIcon from "../../assets/images/closeIcon.svg";
 import { useLocation } from "react-router-dom";
 import Dummy from "../../assets/images/dummy.jpg";
 import VideoPlayer from "../VideoPlayer";
@@ -30,37 +28,32 @@ const DetailPage = () => {
   const [showVideo, setShowVideo] = useState(false);
   const [movieDetails, setMovieDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingModal, setIsLoadingModal] = useState(false);
 
-  var movieRating = Number((movieDetails?.vote_average / 2).toFixed());
+  const actualRating = Number(movieDetails?.vote_average / 2);
+  const numOfStars = Number(String(actualRating)?.split(".")?.[0]);
+  const halfStars =
+    Number(movieDetails?.vote_average / 2) - numOfStars >= 0.5 ? 0.5 : 0;
 
   const getMovieDetail = useCallback(async () => {
     setIsLoading(true);
-    await axios
-      .get(
+    try {
+      let movieData = await axios.get(
         `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
-      )
-      .then((movieData) => {
-        setMovieDetails(movieData?.data);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      );
+      setMovieDetails(movieData?.data);
+      setIsLoading(false);
+    } catch (err) {
+      setIsLoading(false);
+    }
   }, []);
 
-  const getVideoData = useCallback(async () => {
-    setIsLoadingModal(true);
-    await axios
-      .get(
-        `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.REACT_APP_API_KEY}`
-      )
-      .then((response) => {
-        setMovieLink(response?.data?.results?.[0]?.key);
-      })
-      .finally(() => {
-        setIsLoadingModal(false);
-      });
-  }, []);
+  const getVideoData = async () => {
+    let response = await axios.get(
+      `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.REACT_APP_API_KEY}`
+    );
+
+    setMovieLink(response?.data?.results?.[0]?.key);
+  };
 
   useEffect(() => {
     getMovieDetail();
@@ -110,7 +103,7 @@ const DetailPage = () => {
                   className='navigationArrow'
                 />
                 <MovieTitle>{movieDetails?.original_title}</MovieTitle>
-                <MovieRating>Rating: {movieRating}/5</MovieRating>
+                <MovieRating>Rating: {numOfStars + halfStars}/5</MovieRating>
                 <MovieDescription>{movieDetails?.overview}</MovieDescription>
                 <ReleaseDate>
                   Release Date
@@ -137,6 +130,7 @@ const DetailPage = () => {
               }}
             >
               <Image
+                className='playBtn'
                 src={PlayIcon}
                 alt=''
                 onClick={() => {

@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import * as Yup from "yup";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 
@@ -11,50 +12,62 @@ import { SignInContainer, LoginInForm } from "./styles";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [errMsg, setErrMsg] = useState(null);
-  const [reqToken, setReqToken] = useState(null);
 
-  const getReqToken = useCallback(async () => {
-    let reqTokenData = await axios.get(
-      "https://api.themoviedb.org/3/authentication/token/new?api_key=abac24cb3472244be1ad075dde55f834"
-    );
-    reqTokenData?.data?.request_token &&
-      setReqToken(reqTokenData?.data?.request_token);
-  }, []);
+  const [loginPageState, setLoginPageState] = useState({
+    isLoading: false,
+    errMsg: null,
+    reqToken: null,
+  });
+
+  const getReqToken = async () => {
+    try {
+      let reqTokenData = await axios.get(
+        "https://api.themoviedb.org/3/authentication/token/new?api_key=abac24cb3472244be1ad075dde55f834"
+      );
+      reqTokenData?.data?.request_token &&
+        setLoginPageState({
+          ...loginPageState,
+          reqToken: reqTokenData?.data?.request_token,
+        });
+    } catch (err) {
+      console.log();
+    }
+  };
 
   useEffect(() => {
     getReqToken();
-  });
+  }, []);
 
   const onSubmitLoginForm = async (data) => {
-    setIsLoading(true);
+    setLoginPageState({ ...loginPageState, isLoading: true });
 
     const formData = new FormData();
     formData.append("username", data?.username);
     formData.append("password", data.password);
-    formData.append("request_token", reqToken);
+    formData.append("request_token", loginPageState?.reqToken);
 
-    axios
-      .post(
+    try {
+      let res = await axios.post(
         `https://api.themoviedb.org/3/authentication/token/validate_with_login?api_key=${process.env.REACT_APP_API_KEY}`,
         formData
-      )
-      .then((res) => {
-        if (res?.data?.success) {
-          localStorage.setItem("Token", res?.data?.request_token);
-          ToastMessage("Logged in Successfully", "success");
-          navigate("/home");
-        }
-      })
-      .catch((err) => {
-        if (!err?.response?.data?.success) {
-          setErrMsg(err?.response?.data?.status_message);
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      );
+
+      if (res?.data?.success) {
+        localStorage.setItem("Token", res?.data?.request_token);
+        ToastMessage("Logged in Successfully", "success");
+        navigate("/home");
+      }
+      setLoginPageState({ ...loginPageState, isLoading: false });
+    } catch (err) {
+      if (!err?.response?.data?.success) {
+        setLoginPageState({
+          ...loginPageState,
+          errMsg: err?.response?.data?.status_message,
+        });
+      }
+
+      setLoginPageState({ ...loginPageState, isLoading: false });
+    }
   };
 
   const formik = useFormik({
@@ -107,12 +120,12 @@ const Login = () => {
               ) : null}
               {
                 <div className='errorMessage position-absolute err apiErrMessage'>
-                  {errMsg}
+                  {loginPageState?.errMsg}
                 </div>
               }
             </div>
-            <button type='submit' disabled={isLoading}>
-              {isLoading ? <Loader /> : "Log In"}
+            <button type='submit' disabled={loginPageState?.isLoading}>
+              {loginPageState?.isLoading ? <Loader /> : "Log In"}
             </button>
           </form>
         </SignInContainer>

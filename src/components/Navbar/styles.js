@@ -22,14 +22,15 @@ export const NavbarSection = styled.div`
     margin: auto 56px;
   }
 
-  @media (max-width: 1199.98px) {
-    /* flex-direction: column;
-    align-items: start; */
-  }
   @media (max-width: 575.98px) {
     padding: 16px 20px;
     flex-direction: column;
     align-items: start;
+
+    > div {
+      flex-direction: column;
+      align-items: start;
+    }
 
     .logo {
       margin-bottom: 16px;
@@ -62,9 +63,6 @@ export const CustomInput = styled.div`
     border-radius: 5px 0 0 5px;
     padding: 10px 8px;
     width: 424px;
-    /* 
-    max-width: 424px;
-    width: 100%; */
 
     &::placeholder {
       font-family: "Poppins";
@@ -78,18 +76,24 @@ export const CustomInput = styled.div`
     &:focus {
       outline: none;
     }
+
+    @media only screen and (max-width: 767.98px) {
+      margin-left: 40px;
+      max-width: 180px;
+    }
+    @media (max-width: 575.98px) {
+      margin-left: 0;
+      max-width: 424px;
+    }
   }
 
   @media (max-width: 1199.98px) {
-    /* margin-top: 16px; */
     max-width: 350px;
     width: auto;
   }
   @media (max-width: 767.98px) {
-    /* padding: 16px 20px; */
     max-width: 300px;
     width: auto;
-    /* max-width: 250px; */
     margin-right: 0px;
   }
 `;
@@ -105,10 +109,7 @@ export const LogoutBtn = styled.button`
   background: transparent;
   border: none;
 
-  @media (max-width: 1199.98px) {
-    /* display: none; */
-  }
-  @media (max-width: 767.98px) {
-    display: none;
+  @media (max-width: 575.98px) {
+    margin-top: 16px;
   }
 `;

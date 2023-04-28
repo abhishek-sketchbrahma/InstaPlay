@@ -1,6 +1,5 @@
 import React from "react";
-import { Image, ModalBody } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
+import { Image } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import CloseIcon from "../../assets/images/closeIcon.svg";
 
@@ -12,6 +11,7 @@ const VideoPlayer = ({ show, handleClose, movieLink }) => {
       //   backdrop='static'
       //   keyboard={false}
       className='videoModal'
+      centered
     >
       <div className='closeIconContainer'>
         <Image src={CloseIcon} alt='' onClick={handleClose} />

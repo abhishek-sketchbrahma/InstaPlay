@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 
 import { Image, Row, Col } from "react-bootstrap";
 
-import Loader from "../Loader";
+import Loader from "../../utils/Loader";
 import AppLayout from "../../utils/AppLayout";
 
 import moviesApi from "../../services/moviesApi";

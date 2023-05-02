@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiCall = {
-  makeGetRequest(path, callback, fail, params) {
+  makeGetRequest(path, callback, fail) {
     axios
       .get(path)
       .then(callback)
@@ -10,7 +10,7 @@ const apiCall = {
       });
   },
 
-  makePostRequest(path, callback, fail, payload, params) {
+  makePostRequest(path, callback, fail, payload) {
     axios
       .post(path, payload)
       .then(callback)
@@ -19,7 +19,7 @@ const apiCall = {
       });
   },
 
-  makePostRequestWithFormData(path, callback, fail, payload, params) {
+  makePostRequestWithFormData(path, callback, fail, payload) {
     axios
       .post(path, payload)
       .then(callback)

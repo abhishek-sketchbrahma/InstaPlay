@@ -2,7 +2,8 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import AuthGuard from "./utils/AuthGuard";
-import Loader from "./components/Loader";
+import Loader from "./utils/Loader";
+
 import { ToastContainer } from "react-toastify";
 
 import "./App.scss";

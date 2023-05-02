@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 
 import MovieCard from "../MovieCard";
-import Loader from "../Loader";
+import Loader from "../../utils/Loader";
 
 import AppLayout from "../../utils/AppLayout";
 import Banner from "../../assets/images/banner.svg";

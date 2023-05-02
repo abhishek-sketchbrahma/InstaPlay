@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Loader from "../Loader";
+import Loader from "../../utils/Loader";
 
 import loginApi from "../../services/loginApi";
 import { ToastMessage } from "../../utils/toast";
@@ -55,7 +55,7 @@ const Login = () => {
     });
   };
 
-  const onSubmitLoginForm = (data) => {
+  const onSubmitLoginForm = () => {
     setLoginPageState({ ...loginPageState, isLoading: true });
 
     const formData = new FormData();
@@ -68,7 +68,14 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmitLoginForm();
+    if (userName && password) {
+      onSubmitLoginForm();
+    } else {
+      setValidationErr({
+        userNameErr: true,
+        passwordErr: true,
+      });
+    }
   };
 
   const handleUserNameChange = (e) => {
@@ -128,7 +135,6 @@ const Login = () => {
                   value={userName}
                   onChange={handleUserNameChange}
                   onBlur={onUserNameBlur}
-                  required
                 />
                 {validationErr?.userNameErr ? (
                   <div className='errorMessage position-absolute err'>
@@ -144,7 +150,6 @@ const Login = () => {
                   value={password}
                   onChange={handlePasswordChange}
                   onBlur={onPasswordBlur}
-                  required
                 />
                 {validationErr.passwordErr ? (
                   <div className='errorMessage position-absolute err'>
@@ -157,7 +162,7 @@ const Login = () => {
                   </div>
                 }
               </div>
-              <button type='submit' disabled={!userName && !password}>
+              <button type='submit'>
                 {loginPageState?.isLoading ? <Loader /> : "Log In"}
               </button>
             </form>

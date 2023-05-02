@@ -1,6 +1,7 @@
 import React from "react";
 import { Image } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
+
 import Logo from "../../assets/images/logo.svg";
 import { CustomInput, LogoutBtn, NavbarSection } from "./styles";
 import SearchIcon from "../../assets/images/searchIcon.svg";
@@ -18,7 +19,7 @@ const Navbar = ({ searchedMovieName, setSearchedMovieName }) => {
     <NavbarSection>
       <Image
         src={Logo}
-        alt=''
+        alt='Logo'
         className='logo'
         onClick={() => navigate("/home")}
       />
@@ -33,7 +34,7 @@ const Navbar = ({ searchedMovieName, setSearchedMovieName }) => {
                 setSearchedMovieName(e?.target?.value);
               }}
             />
-            <Image src={SearchIcon} alt='' />
+            <Image src={SearchIcon} alt='SearchIcon' />
           </CustomInput>
           <LogoutBtn onClick={onLogout}>Logout</LogoutBtn>
         </div>

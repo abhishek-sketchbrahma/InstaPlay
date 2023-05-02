@@ -1,5 +1,6 @@
 import React from "react";
 import { Image } from "react-bootstrap";
+
 import Modal from "react-bootstrap/Modal";
 import CloseIcon from "../../assets/images/closeIcon.svg";
 
@@ -14,7 +15,7 @@ const VideoPlayer = ({ show, handleClose, movieLink }) => {
       centered
     >
       <div className='closeIconContainer'>
-        <Image src={CloseIcon} alt='' onClick={handleClose} />
+        <Image src={CloseIcon} alt='CloseIcon' onClick={handleClose} />
       </div>
       <div className='parentContainer'>
         <iframe

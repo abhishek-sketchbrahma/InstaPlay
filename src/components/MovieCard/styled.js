@@ -13,10 +13,11 @@ export const Card = styled.div`
     object-fit: cover;
     top: 0;
     left: 0;
+    transition: transform 0.1s ease-in-out;
 
     &:hover {
       transform: scale(1.1);
-      transition: all 1s ease-in-out;
+      /* transition: all 0.2s ease-in-out; */
       z-index: -9999;
     }
   }

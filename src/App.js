@@ -1,14 +1,16 @@
 import { lazy, Suspense } from "react";
-import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import "./App.scss";
-import AuthGuard from "./common/AuthGuard";
+import AuthGuard from "./utils/AuthGuard";
+import Loader from "./components/Loader";
 import { ToastContainer } from "react-toastify";
 
+import "./App.scss";
+import "react-toastify/dist/ReactToastify.css";
+
 const Login = lazy(() => import("./components/Login"));
-const MainPage = lazy(() => import("./components/MainPage"));
-const DetailPage = lazy(() => import("./components/DetailPage"));
+const MovieList = lazy(() => import("./components/MovieList"));
+const MovieDetail = lazy(() => import("./components/MovieDetail"));
 
 const App = () => {
   return (
@@ -19,13 +21,7 @@ const App = () => {
             exact
             path='/'
             element={
-              <Suspense
-                fallback={
-                  <div>
-                    <h1>Loading...</h1>
-                  </div>
-                }
-              >
+              <Suspense fallback={<Loader />}>
                 <Login />
               </Suspense>
             }
@@ -35,14 +31,8 @@ const App = () => {
             path='/home'
             element={
               <AuthGuard>
-                <Suspense
-                  fallback={
-                    <div>
-                      <h1>Loading...</h1>
-                    </div>
-                  }
-                >
-                  <MainPage />
+                <Suspense fallback={<Loader />}>
+                  <MovieList />
                 </Suspense>
               </AuthGuard>
             }
@@ -53,14 +43,8 @@ const App = () => {
             path='/details/:id'
             element={
               <AuthGuard>
-                <Suspense
-                  fallback={
-                    <div>
-                      <h1>Loading...</h1>
-                    </div>
-                  }
-                >
-                  <DetailPage />
+                <Suspense fallback={<Loader />}>
+                  <MovieDetail />
                 </Suspense>
               </AuthGuard>
             }

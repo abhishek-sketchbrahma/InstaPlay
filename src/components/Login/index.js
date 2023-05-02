@@ -1,14 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import axios from "axios";
-import * as Yup from "yup";
 import { useEffect, useState } from "react";
-import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 
-import Navbar from "../Navbar";
 import Loader from "../Loader";
-import { ToastMessage } from "../../common/toast";
+
+import loginApi from "../../services/loginApi";
+import { ToastMessage } from "../../utils/toast";
 import { SignInContainer, LoginInForm } from "./styles";
+import AppLayout from "../../utils/AppLayout";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,117 +18,152 @@ const Login = () => {
     reqToken: null,
   });
 
-  const getReqToken = async () => {
-    try {
-      let reqTokenData = await axios.get(
-        "https://api.themoviedb.org/3/authentication/token/new?api_key=abac24cb3472244be1ad075dde55f834"
-      );
-      reqTokenData?.data?.request_token &&
-        setLoginPageState({
-          ...loginPageState,
-          reqToken: reqTokenData?.data?.request_token,
-        });
-    } catch (err) {
-      console.log();
-    }
-  };
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [validationErr, setValidationErr] = useState({
+    userNameErr: false,
+    passwordErr: false,
+  });
 
   useEffect(() => {
     getReqToken();
   }, []);
 
-  const onSubmitLoginForm = async (data) => {
+  const onSuccess = (e) => {
+    setLoginPageState({
+      ...loginPageState,
+      reqToken: e?.data?.request_token,
+    });
+  };
+
+  const getReqToken = () => {
+    loginApi.fetchToken(onSuccess, {});
+  };
+
+  const onSuccessLogin = (e) => {
+    localStorage.setItem("Token", e?.data?.request_token);
+    ToastMessage("Logged in Successfully", "success");
+    navigate("/home");
+    setLoginPageState({ ...loginPageState, isLoading: false });
+  };
+
+  const onLoginFail = (e) => {
+    setLoginPageState({
+      ...loginPageState,
+      errMsg: e?.response?.data?.status_message,
+      isLoading: false,
+    });
+  };
+
+  const onSubmitLoginForm = (data) => {
     setLoginPageState({ ...loginPageState, isLoading: true });
 
     const formData = new FormData();
-    formData.append("username", data?.username);
-    formData.append("password", data.password);
+    formData.append("username", userName);
+    formData.append("password", password);
     formData.append("request_token", loginPageState?.reqToken);
 
-    try {
-      let res = await axios.post(
-        `https://api.themoviedb.org/3/authentication/token/validate_with_login?api_key=${process.env.REACT_APP_API_KEY}`,
-        formData
-      );
-
-      if (res?.data?.success) {
-        localStorage.setItem("Token", res?.data?.request_token);
-        ToastMessage("Logged in Successfully", "success");
-        navigate("/home");
-      }
-      setLoginPageState({ ...loginPageState, isLoading: false });
-    } catch (err) {
-      if (!err?.response?.data?.success) {
-        setLoginPageState({
-          ...loginPageState,
-          errMsg: err?.response?.data?.status_message,
-        });
-      }
-
-      setLoginPageState({ ...loginPageState, isLoading: false });
-    }
+    loginApi.onLogin(onSuccessLogin, onLoginFail, formData);
   };
 
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-    },
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmitLoginForm();
+  };
 
-    validationSchema: Yup.object({
-      username: Yup.string().required("Please enter username"),
-      password: Yup.string().required("Please enter password"),
-    }),
+  const handleUserNameChange = (e) => {
+    setUserName(e?.target?.value);
+    setValidationErr({
+      ...validationErr,
+      userNameErr: false,
+    });
+  };
 
-    onSubmit: onSubmitLoginForm,
-  });
+  const handlePasswordChange = (e) => {
+    setPassword(e?.target?.value);
+    setValidationErr({
+      ...validationErr,
+      passwordErr: false,
+    });
+  };
+
+  const onPasswordBlur = () => {
+    password === ""
+      ? setValidationErr({
+          ...validationErr,
+          passwordErr: true,
+        })
+      : setValidationErr({
+          ...validationErr,
+          passwordErr: false,
+        });
+  };
+
+  const onUserNameBlur = () => {
+    userName === ""
+      ? setValidationErr({
+          ...validationErr,
+          userNameErr: true,
+        })
+      : setValidationErr({
+          ...validationErr,
+          userNameErr: false,
+        });
+  };
 
   return (
     <>
-      <Navbar />
-      <LoginInForm className='log'>
-        <SignInContainer>
-          <h4>Sign in</h4>
-          <p>Sign in to your Self Service Portal</p>
+      <AppLayout>
+        <LoginInForm className='log'>
+          <SignInContainer>
+            <h4>Sign in</h4>
+            <p>Sign in to your Self Service Portal</p>
 
-          <form onSubmit={formik.handleSubmit}>
-            <div className='inputFeild position-relative'>
-              <input
-                id='username'
-                type='text'
-                placeholder='Username'
-                {...formik.getFieldProps("username")}
-              />
-              {formik.touched.username && formik.errors.username ? (
-                <div className='errorMessage position-absolute err'>
-                  {formik.errors.username}
-                </div>
-              ) : null}
-            </div>
-            <div className='inputFeild position-relative'>
-              <input
-                id='password'
-                type='password'
-                placeholder='Password'
-                {...formik.getFieldProps("password")}
-              />
-              {formik.touched.password && formik.errors.password ? (
-                <div className='errorMessage position-absolute err'>
-                  {formik.errors.password}
-                </div>
-              ) : null}
-              {
-                <div className='errorMessage position-absolute err apiErrMessage'>
-                  {loginPageState?.errMsg}
-                </div>
-              }
-            </div>
-            <button type='submit' disabled={loginPageState?.isLoading}>
-              {loginPageState?.isLoading ? <Loader /> : "Log In"}
-            </button>
-          </form>
-        </SignInContainer>
-      </LoginInForm>
+            <form onSubmit={handleSubmit}>
+              <div className='inputFeild position-relative'>
+                <input
+                  id='username'
+                  type='text'
+                  placeholder='Username'
+                  value={userName}
+                  onChange={handleUserNameChange}
+                  onBlur={onUserNameBlur}
+                  required
+                />
+                {validationErr?.userNameErr ? (
+                  <div className='errorMessage position-absolute err'>
+                    Please enter username
+                  </div>
+                ) : null}
+              </div>
+              <div className='inputFeild position-relative'>
+                <input
+                  id='password'
+                  type='password'
+                  placeholder='Password'
+                  value={password}
+                  onChange={handlePasswordChange}
+                  onBlur={onPasswordBlur}
+                  required
+                />
+                {validationErr.passwordErr ? (
+                  <div className='errorMessage position-absolute err'>
+                    Please enter password
+                  </div>
+                ) : null}
+                {
+                  <div className='errorMessage position-absolute err apiErrMessage'>
+                    {loginPageState?.errMsg}
+                  </div>
+                }
+              </div>
+              <button type='submit' disabled={!userName && !password}>
+                {loginPageState?.isLoading ? <Loader /> : "Log In"}
+              </button>
+            </form>
+          </SignInContainer>
+        </LoginInForm>
+      </AppLayout>
     </>
   );
 };
